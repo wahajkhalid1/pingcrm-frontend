@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Organization, Contact } from '../types';
 
-const API_URL = 'http://127.0.0.1:8000'; // Update if your backend is hosted elsewhere
+const API_URL = 'https://external-stevena-wahaj-17ce92c7.koyeb.app'; // Update if your backend is hosted elsewhere
 
 const api = axios.create({
   baseURL: API_URL
