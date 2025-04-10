@@ -23,15 +23,15 @@ export interface ContactFormSubmitData {
   last_name: string;
   email: string;
   phone: string;
-  organization_id?: number;
+  organization_id: number;
 }
 
-const schema = yup.object({
+const schema: yup.ObjectSchema<ContactFormData> = yup.object({
   first_name: yup.string().required('First name is required'),
   last_name: yup.string().required('Last name is required'),
   email: yup.string().email('Invalid email format').required('Email is required'),
   phone: yup.string().matches(/^[0-9+\-() ]*$/, 'Invalid phone number format').required('Phone is required'),
-  organization_id: yup.string().nullable(),
+  organization_id: yup.string().nullable().defined(),
 });
 
 const ContactForm: React.FC<ContactFormProps> = ({ onSubmit, initialData }) => {
@@ -43,7 +43,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSubmit, initialData }) => {
     handleSubmit,
     formState: { errors },
   } = useForm<ContactFormData>({
-    resolver: yupResolver<ContactFormData, any, ContactFormData>(schema),
+    resolver: yupResolver(schema),
     defaultValues: {
       first_name: initialData?.first_name || '',
       last_name: initialData?.last_name || '',
@@ -71,7 +71,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSubmit, initialData }) => {
       last_name: data.last_name,
       email: data.email,
       phone: data.phone,
-      organization_id: data.organization_id ? parseInt(data.organization_id) : undefined,
+      organization_id: data.organization_id ? parseInt(data.organization_id) : 0,
     };
     onSubmit(formattedData);
   };

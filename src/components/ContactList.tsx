@@ -62,8 +62,16 @@ const ContactList: React.FC<ContactListProps> = ({
   const handleUpdateContact = async (data: ContactFormSubmitData) => {
     if (!editingContact) return;
 
+    const updateData: Partial<Omit<Contact, 'id' | 'created_at' | 'updated_at'>> = {
+      first_name: data.first_name,
+      last_name: data.last_name,
+      email: data.email,
+      phone: data.phone,
+      organization_id: data.organization_id || undefined,
+    };
+
     try {
-      await updateContact(editingContact.id, data);
+      await updateContact(editingContact.id, updateData);
       setEditingContact(null);
       await loadContacts();
     } catch (err) {
